@@ -1,6 +1,4 @@
-#!/bin/python3:
-
-#JeanMarie Kiiza 
+#!/usr/bin/env python3
 #1/5/2025
 #Port scanner Project 
 import sys
@@ -13,6 +11,7 @@ if len(sys.argv) == 2:
 else:
 	print("invalid amount of arguments.")
 	print("syntax: python3 scanner.py <ip>")
+	sys.exit(1)
 	
 # makes it look good and readable 
 print("-" * 50)
@@ -21,10 +20,13 @@ print("Time started: "+str(datetime.now()))
 print("-" * 50)
 
 # Loop for the port scanner, you can chnage the range into anything
+socket.setdefaulttimeout(1)
+
 try:
 	for port in range(58, 100):
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		socket.setdefaulttimeout(1)
+		# ensure the socket respects the global timeout in environments that ignore the default
+		s.settimeout(1)
 		result = s.connect_ex((target,port))
 		if result == 0:
 			print(f"port {port} is open")
